@@ -69,44 +69,61 @@ const getFromFavorites = (index) => {
 </script>
 
 <template>
-  <div class="wrapper">
-    <h1 class="title">Crypto Exchanger</h1>
-    <h2 class="title" v-if="result">{{ result }}</h2>
-    <ACard>
-      <div class="convert">
-        <AInputNumber
-          style="width: 100%"
-          v-model:value="amount"
-          @input="changeAmount"
-          :min="0"
-          placeholder="Enter amount"
-        />
-        <div class="buttons">
-          <AButton type="primary" @click="convertCurrency">Convert</AButton>
-          <AButton type="primary" @click="addToFavorites">Add to favorites</AButton>
+  <ALayout>
+    <ALayoutContent class="content">
+      <ACard class="wrapper">
+        <div class="inner">
+          <ATypographyTitle class="title">Crypto Exchanger</ATypographyTitle>
+          <div class="result" v-if="result">
+            <ATypographyTitle :level="2">{{ result }}</ATypographyTitle>
+          </div>
+          <div class="convert">
+            <AInputNumber
+              style="width: 100%"
+              v-model:value="amount"
+              @input="changeAmount"
+              :min="0"
+              placeholder="Enter amount"
+            />
+            <div class="buttons">
+              <AButton type="primary" @click="convertCurrency">Convert</AButton>
+              <AButton type="primary" @click="addToFavorites">Add to favorites</AButton>
+            </div>
+          </div>
+          <FavoriteList v-if="favorites.length" :favorites="favorites" :getFromFavorites="getFromFavorites"/>
+          <div class="grid">
+            <SelectList :setCurrency="setFirstCurrency" :currency="firstCurrency"/>
+            <SelectList :setCurrency="setSecondCurrency" :currency="secondCurrency"/>
+          </div>
         </div>
-      </div>
-    </ACard>
-    <FavoriteList v-if="favorites.length" :favorites="favorites" :getFromFavorites="getFromFavorites" />
-    <div class="grid">
-      <SelectList :setCurrency="setFirstCurrency" :currency="firstCurrency"/>
-      <SelectList :setCurrency="setSecondCurrency" :currency="secondCurrency"/>
-    </div>
-  </div>
+      </ACard>
+    </ALayoutContent>
+  </ALayout>
 </template>
 
 <style scoped>
+.content {
+  height: 100dvh;
+  padding: 16px;
+}
+
 .wrapper {
   width: 100%;
   max-width: 400px;
-  padding: 0 16px;
-  margin: 40px auto;
+  margin: 16px auto;
+}
+
+.inner {
   display: grid;
   gap: 16px;
 }
 
 .title {
   margin: 0;
+  text-align: center;
+}
+
+.result {
   text-align: center;
 }
 
